@@ -212,4 +212,53 @@ int compra_cantPendientes(compra listaCompras[], int lenCompra);
  */
 int compra_precioPorUnidadMasBajo(compra listaCompras[], int lenCompras);
 
+
+/**
+ *\brief calcula y muestra los informes
+ *\param compra listaCompras[] recibe la lista de las compras
+ *\param int lenCompras recibe el largo de la lista de compras
+ *\param barbijo listaBarbijos[] recibe la lista de los barbijos
+ *\return retorno retorna -1 si no puede validar y 0 si pudo procesar
+ */
+int compra_informes(compra listaCompras[], int lenCompras, barbijo listaBarbijos[]);
+
+
+/**
+ *\brief calcula la cantidad de compras de un cliente pagadas
+ */
+int compra_cantComprasPorCLientePagadas(compra listaCompras[], int lenCompras, int clienteId);
+
+/**
+ * \brief calcula el cliente con mas compras pagadas
+ */
+int compra_clienteConMasComPagadas(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes);
+
+/**
+ *\brief informes del parcial
+ */
+int compra_informesParcial(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes);
+
+
+/**
+ *\brief calcula la cantidad de compras de un cliente pendientes
+ */
+int compra_cantComprasPorCLientePendientes(compra listaCompras[], int lenCompras, int clienteId);
+
+/**
+ * \brief calcula el cliente con mas compras pendientes
+ */
+int compra_clienteConMasComPendientes(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes);
+
+
+/**
+ *\brief imprime los datos del cliente por id
+ */
+int compra_imprimirDatosClientePorID(cliente listaClientes[], int lenClientes,int clienteId);
+
+
+/**
+ * \brief lista de compras pendientes de pago con informacion de la compra y el cliente
+ */
+int compra_listaPendientesPagoConInfo(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenCliente);
+
 #endif /* COMPRA_H_ */

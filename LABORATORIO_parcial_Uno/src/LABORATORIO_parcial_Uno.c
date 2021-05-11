@@ -45,10 +45,11 @@ int main(void)
 		printf("\n[6] COMPRA, CANCELAR");
 		printf("\n[7] IMPRIMIR CLIENTES");
 		printf("\n[8] INFORMES");
-		printf("\n[9] SALIR");
+		printf("\n[9] INFORMES PARCIAL");
+		printf("\n[10] SALIR");
 		printf("\n");
 
-		utn_getNumero(&opcionElegida, 2, "\n-INGRESE LA OPCION DESEADA", "\nERROR opcion invalida", 1, 9, 1);
+		utn_getNumero(&opcionElegida, 2, "\n-INGRESE LA OPCION DESEADA", "\nERROR opcion invalida", 1, 10, 1);
 
 		continuar =1;
 		switch(opcionElegida)
@@ -80,6 +81,9 @@ int main(void)
 				compra_informes(listaCompras, CANT_COMPRAS, listaBarbijos);
 				break;
 			case 9:
+				compra_informesParcial(listaCompras, CANT_COMPRAS, listaClientes, CANT_CLIENTES);
+				break;
+			case 10:
 				continuar =0;
 				break;
 		}

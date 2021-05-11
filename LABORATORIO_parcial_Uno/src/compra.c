@@ -645,7 +645,11 @@ int compra_crearListaBarbijos(compra listaCompras[], int lenCompras, barbijo lis
 }
 
 /**
- *
+ *\brief calcula y muestra los informes
+ *\param compra listaCompras[] recibe la lista de las compras
+ *\param int lenCompras recibe el largo de la lista de compras
+ *\param barbijo listaBarbijos[] recibe la lista de los barbijos
+ *\return retorno retorna -1 si no puede validar y 0 si pudo procesar
  */
 int compra_informes(compra listaCompras[], int lenCompras, barbijo listaBarbijos[])
 {
@@ -654,6 +658,8 @@ int compra_informes(compra listaCompras[], int lenCompras, barbijo listaBarbijos
 
 	if(listaCompras!=NULL && lenCompras>=0 && listaBarbijos!=NULL)
 	{
+		retorno =0;
+
 		printf("\n a) Color de barbijo que se compro mas veces");
 		printf("\n b) Cantidad de compras pendientes");
 		printf("\n c) Compra con precio por unidad mas bajo");
@@ -835,6 +841,257 @@ int compra_precioPorUnidadMasBajo(compra listaCompras[], int lenCompras)
 
 	return retorno;
 }
+
+
+
+/**
+ *\brief informes del parcial
+ */
+int compra_informesParcial(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes)
+{
+	int retorno =-1;
+	char opcionElegida[2];
+
+	if(listaCompras!=NULL && lenCompras>=0 && listaClientes!=NULL && lenClientes>=0)
+	{
+		retorno =0;
+
+		printf("\n a) Cliente con mas compras pagadas");
+		printf("\n b) Cliente con mas compras pendientes");
+		printf("\n c) Lista de compras pendientes de pago con informacion de la compra y el cliente");
+		printf("\n");
+		utn_getString(opcionElegida, 2, "\nIngrese la opcion deseada:", "ERROR", 3);
+
+		if(strcmp(opcionElegida,"a")==0)
+		{
+			compra_clienteConMasComPagadas(listaCompras, lenCompras, listaClientes, lenClientes);
+		}
+		else if(strcmp(opcionElegida,"b")==0)
+		{
+			compra_clienteConMasComPendientes(listaCompras, lenCompras, listaClientes, lenClientes);
+		}
+		else if(strcmp(opcionElegida,"c")==0)
+		{
+			compra_listaPendientesPagoConInfo(listaCompras, lenCompras, listaClientes, lenClientes);
+		}
+		else
+		{
+			printf("\nOpcion incorrecta");
+		}
+	}
+
+	return retorno;
+}
+
+
+/**
+ * \brief calcula el cliente con mas compras pagadas
+ */
+int compra_clienteConMasComPagadas(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes)
+{
+	int retorno =-1;
+	int i;
+	int bufferCantCom;
+	int mayorCantCompras;
+	int indiceClienteMasCompras;
+
+	if(listaCompras!=NULL && lenCompras>=0 && listaClientes!=NULL && lenClientes>=0)
+	{
+		retorno =0;
+		for(i=0;i<lenClientes;i++)
+		{
+			if(listaClientes[i].isEmpty !=1)
+			{
+				bufferCantCom = compra_cantComprasPorCLientePagadas(listaCompras, lenCompras, listaClientes[i].idCliente);
+			}
+
+			if(i==0)
+			{
+				mayorCantCompras = bufferCantCom;
+				indiceClienteMasCompras =i;
+			}
+			else if(bufferCantCom > mayorCantCompras)
+			{
+				mayorCantCompras = bufferCantCom;
+				indiceClienteMasCompras =i;
+			}
+		}
+
+		printf("\nEl cliente con mas compras pagadas es: %s %s la cantidad de compras es: %d", listaClientes[indiceClienteMasCompras].nombreCliente,
+																			listaClientes[indiceClienteMasCompras].apellidoCliente,mayorCantCompras);
+	}
+
+
+
+	return retorno;
+}
+
+/**
+ *\brief calcula la cantidad de compras de un cliente pagadas
+ */
+int compra_cantComprasPorCLientePagadas(compra listaCompras[], int lenCompras, int clienteId)
+{
+	int retorno =-1;
+	int i;
+	int acumCantCompras =0;
+
+
+	if(listaCompras!=NULL && lenCompras>=0 && clienteId>999)
+	{
+		for(i=0;i<lenCompras;i++)
+		{
+			if(listaCompras[i].isEmpty != 1)
+			{
+				if(listaCompras[i].idClienteElegido == clienteId && listaCompras[i].estadoCompra == COBRADA)
+				{
+					acumCantCompras++;
+				}
+			}
+		}
+
+		retorno =  acumCantCompras;
+	}
+
+	return retorno;
+}
+
+
+
+
+/**
+ * \brief calcula el cliente con mas compras pendientes
+ */
+int compra_clienteConMasComPendientes(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenClientes)
+{
+	int retorno =-1;
+	int i;
+	int bufferCantCom;
+	int mayorCantCompras;
+	int indiceClienteMasCompras;
+
+	if(listaCompras!=NULL && lenCompras>=0 && listaClientes!=NULL && lenClientes>=0)
+	{
+		retorno =0;
+		for(i=0;i<lenClientes;i++)
+		{
+			if(listaClientes[i].isEmpty !=1)
+			{
+				bufferCantCom = compra_cantComprasPorCLientePendientes(listaCompras, lenCompras, listaClientes[i].idCliente);
+			}
+
+			if(i==0)
+			{
+				mayorCantCompras = bufferCantCom;
+				indiceClienteMasCompras =i;
+			}
+			else if(bufferCantCom > mayorCantCompras)
+			{
+				mayorCantCompras = bufferCantCom;
+				indiceClienteMasCompras =i;
+			}
+		}
+
+		printf("\nEl cliente con mas compras pendientes es: %s %s la cantidad de compras es: %d", listaClientes[indiceClienteMasCompras].nombreCliente,
+																			listaClientes[indiceClienteMasCompras].apellidoCliente,mayorCantCompras);
+	}
+
+
+
+	return retorno;
+}
+
+/**
+ *\brief calcula la cantidad de compras de un cliente pendientes
+ */
+int compra_cantComprasPorCLientePendientes(compra listaCompras[], int lenCompras, int clienteId)
+{
+	int retorno =-1;
+	int i;
+	int acumCantCompras =0;
+
+
+	if(listaCompras!=NULL && lenCompras>=0 && clienteId>999)
+	{
+		for(i=0;i<lenCompras;i++)
+		{
+			if(listaCompras[i].isEmpty != 1)
+			{
+				if(listaCompras[i].idClienteElegido == clienteId && listaCompras[i].estadoCompra == PENDIENTE_DE_COBRAR)
+				{
+					acumCantCompras++;
+				}
+			}
+		}
+
+		retorno =  acumCantCompras;
+	}
+
+	return retorno;
+}
+
+
+
+/**
+ * \brief lista de compras pendientes de pago con informacion de la compra y el cliente
+ */
+int compra_listaPendientesPagoConInfo(compra listaCompras[], int lenCompras, cliente listaClientes[], int lenCliente)
+{
+	int retorno =-1;
+	int i;
+
+	if(listaCompras!=NULL && lenCompras>=0 && listaClientes!=NULL && lenCliente>=0)
+	{
+		retorno =0;
+		printf("\nCOMPRAS PENDIENTES DE PAGO:");
+		for(i=0;i<lenCompras;i++)
+		{
+			if(listaCompras[i].isEmpty !=1)
+			{
+				if(listaCompras[i].estadoCompra == PENDIENTE_DE_COBRAR)
+				{
+					printf("\n");
+					printf("\nID - CANT - COLOR - DIRECCION");
+					printf("\n%d  %d  %s  %s",listaCompras[i].idCompra, listaCompras[i].cantBarbijos, listaCompras[i].colorBarbijo, listaCompras[i].direccionEntrega);
+					compra_imprimirDatosClientePorID(listaClientes, lenCliente, listaCompras[i].idClienteElegido);
+				}
+			}
+		}
+
+
+	}
+
+
+	return retorno;
+}
+
+/**
+ *\brief imprime los datos del cliente por id
+ */
+int compra_imprimirDatosClientePorID(cliente listaClientes[], int lenClientes,int clienteId)
+{
+	int retorno =-1;
+	int i;
+
+	if(listaClientes!=NULL && lenClientes>=0 && clienteId>999)
+	{
+		retorno =0;
+
+		for(i=0;i<lenClientes;i++)
+		{
+			if(listaClientes[i].isEmpty!=1 && listaClientes[i].idCliente == clienteId)
+			{
+				printf("\n");
+				printf("\n-DATOS DEL CLIENTE:");
+				printf("\nID - NOMBRE - APELLIDO - CUIT");
+				printf("\n%d   %s   %s    %s", listaClientes[i].idCliente, listaClientes[i].nombreCliente, listaClientes[i].apellidoCliente, listaClientes[i].cuitCliente);
+			}
+		}
+	}
+
+
+	return retorno;
+}
+
 
 
 
